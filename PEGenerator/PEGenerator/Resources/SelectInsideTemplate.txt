@@ -1,0 +1,5 @@
+var ret[[0]] = this.item[[0]].Parse(line, index, out next, parser);
+if(next != -1)
+{
+	return new Result{ Selected = [[0]], Item[[0]] = ret[[0]] };
+}

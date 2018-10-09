@@ -1,0 +1,20 @@
+public class _[[0]]
+{
+	public class Result
+	{
+		public int Selected { get; set; }
+		[[1]]
+	}
+	[[2]]
+
+	public Result Parse(string line, int index, out int next, Parser parser)
+	{
+		[[3]]
+		return null;
+	}
+
+	public _[[0]]()
+	{
+		[[4]]
+	}
+}

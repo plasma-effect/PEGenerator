@@ -1,0 +1,17 @@
+public class _[[0]]
+{
+	public class Result
+	{
+		public Values.[[1]] Item{ get; set; }
+	}
+
+	public Result Parse(string line, int index, out int next, Parser parser)
+	{
+		var ret = parser.Parse(line, index, out next, [[2]]);
+		if (next != -1)
+		{
+			return new Result { Item = ret as Values.[[1]] };
+		}
+		return null;
+	}
+}

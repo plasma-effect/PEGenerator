@@ -1,0 +1,23 @@
+public class _[[0]]
+{
+	public class Result : IPResult
+	{
+		[[1]]
+	}
+	[[2]]
+
+	public _[[0]]()
+	{
+		[[3]]
+	}
+
+	public Result Parse(string line, int index, out int next, Parser parser)
+	{
+		[[4]]
+		next = index;
+		return new Result()
+		{
+			[[5]]
+		};
+	}
+}

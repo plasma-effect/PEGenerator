@@ -1,0 +1,11 @@
+using System.Text.RegularExpressions;
+
+namespace [[0]]
+{
+	namespace Values
+	{
+		[[1]]
+	}
+	public interface IPResult{}
+	[[2]]
+}

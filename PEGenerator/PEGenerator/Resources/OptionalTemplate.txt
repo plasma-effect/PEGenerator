@@ -1,0 +1,23 @@
+public class _[[0]]
+{
+	_[[1]] item;
+	public class Result
+	{
+		public _[[1]].Result Item{ get; set;}
+	}
+
+	public Result Parse(string line, int index, out int next, Parser parser)
+	{
+		var ret = new Result{ Item = this.item.Parse(line, index, out next, parser)};
+		if(next != -1)
+		{
+			next = index;
+		}
+		return ret;
+	}
+
+	public _[[0]]()
+	{
+		this.item = new _[[1]]();
+	}
+}

@@ -1,0 +1,7 @@
+case [[0]]:
+	var ret[[0]] = this.item[[0]].Parse(line, index, out next, this);
+	if(next != -1)
+	{
+		return new Values.[[1]]{ Item = ret[[0]] };
+	}
+	break;

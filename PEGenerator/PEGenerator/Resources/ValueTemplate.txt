@@ -1,0 +1,4 @@
+public class [[0]] : IPResult
+{
+	public _[[1]].Result Item{ get; set; }
+}

@@ -1,0 +1,30 @@
+public class _[[0]]
+{
+	public class Result : IPResult
+	{
+		public string Value { get; set; }
+	}
+	public string[] Values { get; }
+
+	public _[[0]]()
+	{
+		this.Values = new string[]{ [[1]] };
+	}
+	public Result Parse(string line, int index, out int next, Parser parser)
+	{
+		foreach (var v in this.Values)
+		{
+			if (line.Length - index < v.Length)
+			{
+				continue;
+			}
+			if (v == line.Substring(index, v.Length))
+			{
+				next = index + v.Length;
+				return new Result() { Value = v };
+			}
+		}
+		next = -1;
+		return null;
+	}
+}

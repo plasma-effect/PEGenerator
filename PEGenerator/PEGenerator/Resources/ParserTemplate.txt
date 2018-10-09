@@ -1,0 +1,24 @@
+public class Parser
+{
+	[[0]]
+	
+	public IPResult Parse(string line, int index, out int next, int value)
+	{
+		switch (value)
+		{
+			[[1]]
+		}
+		next = -1;
+		return null;
+	}
+
+	public Values.[[2]] Parse(string line, out int end)
+	{
+		return Parse(line, 0, out end, [[4]]) as Values.[[2]];
+	}
+	
+	public Parser()
+	{
+		[[3]]
+	}
+}
