@@ -191,6 +191,40 @@ namespace PEGenerator {
         }
         
         /// <summary>
+        ///   public class _[[0]]
+        ///{
+        ///	_[[1]] item;
+        ///
+        ///	public class Result
+        ///	{
+        ///		List&lt;_[[1]].Result&gt; Items{ get; set; }
+        ///	}
+        ///
+        ///	public Result Parse(string line, int index, out int next, Parser parser)
+        ///	{
+        ///		var list = new List&lt;_[[1]].Result&gt;();
+        ///		while(index != line.Length)
+        ///		{
+        ///			var ret = this.item.Parse(line, index, out var n, parser);
+        ///			if(n == -1)
+        ///			{
+        ///				break;
+        ///			}
+        ///			list.Add(ret);
+        ///			index = n;
+        ///		}
+        ///		next = index;
+        ///		return new Result{ Items = list };
+        ///	}
+        ///} に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string RepeatTemplate {
+            get {
+                return ResourceManager.GetString("RepeatTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   var ret[[0]] = this.item[[0]].Parse(line, index, out next, parser);
         ///if(next != -1)
         ///{

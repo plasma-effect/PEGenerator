@@ -17,10 +17,10 @@ namespace ParserTest
             WriteLine(ret?.ToString() ?? "null");
             if (ret != null)
             {
-                var item = ret.Item;
-                WriteLine(item.Item0.Value);
-                WriteLine(item.Item1.Item?.Value ?? "[]");
-                WriteLine(item.Item2.Value);
+                foreach(var v in ret.Item.Items)
+                {
+                    WriteLine(v.Value);
+                }
             }
         }
     }

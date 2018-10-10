@@ -96,5 +96,8 @@
   <ItemGroup>
     <None Include="Resources\OptionalTemplate.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RepeatTemplate.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

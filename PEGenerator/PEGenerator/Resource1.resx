@@ -133,6 +133,9 @@
   <data name="RegexTermTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\RegexTermTemplate.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
   </data>
+  <data name="RepeatTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\RepeatTemplate.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
+  </data>
   <data name="SelectInsideTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\SelectInsideTemplate.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
   </data>

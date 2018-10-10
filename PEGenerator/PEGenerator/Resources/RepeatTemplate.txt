@@ -1,0 +1,31 @@
+public class _[[0]]
+{
+	_[[1]] item;
+
+	public class Result
+	{
+		public List<_[[1]].Result> Items{ get; set; }
+	}
+
+	public Result Parse(string line, int index, out int next, Parser parser)
+	{
+		var list = new List<_[[1]].Result>();
+		while(index != line.Length)
+		{
+			var ret = this.item.Parse(line, index, out var n, parser);
+			if(n == -1)
+			{
+				break;
+			}
+			list.Add(ret);
+			index = n;
+		}
+		next = index;
+		return new Result{ Items = list };
+	}
+
+	public _[[0]]()
+	{
+		this.item = new _[[1]]();
+	}
+}

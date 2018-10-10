@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace PEGenerator
 {
@@ -6,7 +7,7 @@ namespace PEGenerator
     {
         public class Start : IPResult
         {
-            public _4.Result Item { get; set; }
+            public _1.Result Item { get; set; }
         }
 
     }
@@ -44,133 +45,38 @@ namespace PEGenerator
 
     public class _1
     {
-        public class Result : IPResult
+        _0 item;
+
+        public class Result
         {
-            public string Value { get; set; }
+            public List<_0.Result> Items { get; set; }
         }
-        public string[] Values { get; }
+
+        public Result Parse(string line, int index, out int next, Parser parser)
+        {
+            var list = new List<_0.Result>();
+            while (index != line.Length)
+            {
+                var ret = this.item.Parse(line, index, out var n, parser);
+                if (n == -1)
+                {
+                    break;
+                }
+                list.Add(ret);
+                index = n;
+            }
+            next = index;
+            return new Result { Items = list };
+        }
 
         public _1()
         {
-            this.Values = new string[] { "b", };
-        }
-        public Result Parse(string line, int index, out int next, Parser parser)
-        {
-            foreach (var v in this.Values)
-            {
-                if (line.Length - index < v.Length)
-                {
-                    continue;
-                }
-                if (v == line.Substring(index, v.Length))
-                {
-                    next = index + v.Length;
-                    return new Result() { Value = v };
-                }
-            }
-            next = -1;
-            return null;
-        }
-    }
-
-    public class _2
-    {
-        _1 item;
-        public class Result
-        {
-            public _1.Result Item { get; set; }
-        }
-
-        public Result Parse(string line, int index, out int next, Parser parser)
-        {
-            var ret = new Result { Item = this.item.Parse(line, index, out next, parser) };
-            if (next == -1)
-            {
-                next = index;
-            }
-            return ret;
-        }
-
-        public _2()
-        {
-            this.item = new _1();
-        }
-    }
-    public class _3
-    {
-        public class Result : IPResult
-        {
-            public string Value { get; set; }
-        }
-        public string[] Values { get; }
-
-        public _3()
-        {
-            this.Values = new string[] { "c", };
-        }
-        public Result Parse(string line, int index, out int next, Parser parser)
-        {
-            foreach (var v in this.Values)
-            {
-                if (line.Length - index < v.Length)
-                {
-                    continue;
-                }
-                if (v == line.Substring(index, v.Length))
-                {
-                    next = index + v.Length;
-                    return new Result() { Value = v };
-                }
-            }
-            next = -1;
-            return null;
-        }
-    }
-
-    public class _4
-    {
-        public class Result : IPResult
-        {
-            public _0.Result Item0 { get; set; }
-            public _2.Result Item1 { get; set; }
-            public _3.Result Item2 { get; set; }
-
-        }
-        _0 item0;
-        _2 item1;
-        _3 item2;
-
-
-        public _4()
-        {
-            this.item0 = new _0();
-            this.item1 = new _2();
-            this.item2 = new _3();
-
-        }
-
-        public Result Parse(string line, int index, out int next, Parser parser)
-        {
-            var ret0 = this.item0.Parse(line, index, out index, parser);
-            if (index == -1) { next = -1; return null; }
-            var ret1 = this.item1.Parse(line, index, out index, parser);
-            if (index == -1) { next = -1; return null; }
-            var ret2 = this.item2.Parse(line, index, out index, parser);
-            if (index == -1) { next = -1; return null; }
-
-            next = index;
-            return new Result()
-            {
-                Item0 = ret0,
-                Item1 = ret1,
-                Item2 = ret2,
-
-            };
+            this.item = new _0();
         }
     }
     public class Parser
     {
-        _4 item0;
+        _1 item0;
 
 
         public IPResult Parse(string line, int index, out int next, int value)
@@ -197,7 +103,7 @@ namespace PEGenerator
 
         public Parser()
         {
-            this.item0 = new _4();
+            this.item0 = new _1();
 
         }
     }

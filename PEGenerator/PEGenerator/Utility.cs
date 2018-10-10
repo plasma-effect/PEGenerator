@@ -61,4 +61,43 @@ namespace PEGenerator
             return builder;
         }
     }
+
+    public class HashTable<T, U>
+    {
+        Dictionary<int, List<Tuple<T, U>>> tables;
+
+        public HashTable()
+        {
+            this.tables = new Dictionary<int, List<Tuple<T, U>>>();
+        }
+
+        public void Add(T val, U code)
+        {
+            var hash = val.GetHashCode();
+            if (!this.tables.ContainsKey(hash))
+            {
+                this.tables.Add(hash, new List<Tuple<T, U>>());
+            }
+            this.tables[hash].Add(new Tuple<T, U>(val, code));
+        }
+
+        public bool TryGetValue(T val, out U code)
+        {
+            var hash = val.GetHashCode();
+            if (this.tables.ContainsKey(hash))
+            {
+                foreach(var v in this.tables[hash])
+                {
+                    if(v.Item1.Equals(val))
+                    {
+                        code = v.Item2;
+                        return true;
+                    }
+                }
+            }
+            code = default(U);
+            return false;
+        }
+    }
+
 }

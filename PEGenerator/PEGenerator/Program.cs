@@ -16,7 +16,7 @@ namespace PEGenerator
             {
                 Start = "Start"
             };
-            generator.Add("Start", NewSequence(NewTerm("a"), NewOption(NewTerm("b")), NewTerm("c")));
+            generator.Add("Start", NewRepeat(NewTerm("a")));
             WriteLine(generator.PrintOut("PEGenerator"));
 #if DEBUG
             WriteLine("終了を待機しています。Enterを押してください。");

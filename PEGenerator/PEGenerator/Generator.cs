@@ -36,13 +36,12 @@ namespace PEGenerator
 
             public int PrintOut(StringBuilder builder, ref int index, Generator generator)
             {
-                var hash = GetHashCode();
-                if (generator.ExistHash.TryGetValue(hash, out var ind))
+                if (generator.HashTable.TryGetValue(this, out var ind))
                 {
                     return ind;
                 }
                 var @this = ++index;
-                generator.ExistHash.Add(hash, @this);
+                generator.HashTable.Add(this, @this);
                 builder.AppendLine(Resource1.TermTemplate)
                     .Replace(2, @this.ToString(), this.values.ToListString());
                 return @this;
@@ -70,12 +69,12 @@ namespace PEGenerator
 
             public int PrintOut(StringBuilder builder, ref int index, Generator generator)
             {
-                var hash = GetHashCode();
-                if (generator.ExistHash.TryGetValue(hash, out var ind))
+                if (generator.HashTable.TryGetValue(this, out var ind))
                 {
                     return ind;
                 }
                 var @this = ++index;
+                generator.HashTable.Add(this, @this);
                 builder.AppendLine(Resource1.RegexTermTemplate).Replace(2,
                     @this.ToString(),
                     this.regex);
@@ -110,8 +109,7 @@ namespace PEGenerator
                 var run = new StringBuilder();
                 var @return = new StringBuilder();
                 var child = new List<int>();
-                var hash = GetHashCode();
-                if (generator.ExistHash.TryGetValue(hash, out var ind))
+                if (generator.HashTable.TryGetValue(this, out var ind))
                 {
                     return ind;
                 }
@@ -120,7 +118,7 @@ namespace PEGenerator
                     child.Add(e.PrintOut(builder, ref index, generator));
                 }
                 var @this = ++index;
-                generator.ExistHash.Add(hash, @this);
+                generator.HashTable.Add(this, @this);
                 foreach (var (i, j) in child.Indexed())
                 {
                     result.AppendLine($"public _{i}.Result Item{j} {{get; set; }}");
@@ -162,13 +160,12 @@ namespace PEGenerator
 
             public int PrintOut(StringBuilder builder, ref int index, Generator generator)
             {
-                var hash = GetHashCode();
-                if (generator.ExistHash.TryGetValue(hash, out var ind))
+                if (generator.HashTable.TryGetValue(this, out var ind))
                 {
                     return ind;
                 }
                 var @this = ++index;
-                generator.ExistHash.Add(hash, @this);
+                generator.HashTable.Add(this, @this);
 
                 builder.AppendLine(Resource1.ValueExprTemplate).Replace(3,
                     @this.ToString(),
@@ -199,8 +196,7 @@ namespace PEGenerator
 
             public int PrintOut(StringBuilder builder, ref int index, Generator generator)
             {
-                var hash = GetHashCode();
-                if (generator.ExistHash.TryGetValue(hash, out var ind))
+                if (generator.HashTable.TryGetValue(this, out var ind))
                 {
                     return ind;
                 }
@@ -210,7 +206,7 @@ namespace PEGenerator
                     child.Add(e.PrintOut(builder, ref index, generator));
                 }
                 var @this = ++index;
-                generator.ExistHash.Add(hash, @this);
+                generator.HashTable.Add(this, @this);
                 var resultdefine = new StringBuilder();
                 var define = new StringBuilder();
                 var inside = new StringBuilder();
@@ -240,23 +236,68 @@ namespace PEGenerator
                 this.expr = expr;
             }
 
+            public override bool Equals(object obj)
+            {
+                return obj is Optional optional &&
+                       EqualityComparer<IExpr>.Default.Equals(this.expr, optional.expr);
+            }
+
+            public override int GetHashCode()
+            {
+                return -1623473186 + EqualityComparer<IExpr>.Default.GetHashCode(this.expr);
+            }
+
             public int PrintOut(StringBuilder builder, ref int index, Generator generator)
             {
-                var hash = GetHashCode();
-                if (generator.ExistHash.TryGetValue(hash, out var ind))
+                if (generator.HashTable.TryGetValue(this, out var ind))
                 {
                     return ind;
                 }
                 var child = this.expr.PrintOut(builder, ref index, generator);
                 var @this = ++index;
-                generator.ExistHash.Add(hash, @this);
+                generator.HashTable.Add(this, @this);
                 builder.AppendLine(Resource1.OptionalTemplate).Replace(2,
                     @this.ToString(),
                     child.ToString());
                 return @this;
             }
         }
+        public class Repeat : IExpr
+        {
+            IExpr expr;
 
+            public Repeat(IExpr expr)
+            {
+                this.expr = expr;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is Repeat repeat &&
+                       EqualityComparer<IExpr>.Default.Equals(this.expr, repeat.expr);
+            }
+
+            public override int GetHashCode()
+            {
+                return -1623473186 + EqualityComparer<IExpr>.Default.GetHashCode(this.expr);
+            }
+
+            public int PrintOut(StringBuilder builder, ref int index, Generator generator)
+            {
+                if (generator.HashTable.TryGetValue(this, out var ind))
+                {
+                    return ind;
+                }
+                var child = this.expr.PrintOut(builder, ref index, generator);
+                var @this = ++index;
+                generator.HashTable.Add(this, @this);
+                builder.AppendLine(Resource1.RepeatTemplate).Replace(2,
+                    @this.ToString(),
+                    child.ToString());
+                return @this;
+            }
+        }
+        
         public static Term NewTerm(params string[] values)
         {
             return new Term(values);
@@ -281,13 +322,17 @@ namespace PEGenerator
         {
             return new Optional(expr);
         }
+        public static Repeat NewRepeat(IExpr expr)
+        {
+            return new Repeat(expr);
+        }
         
         public Generator()
         {
             this.Exprs = new List<IExpr>();
             this.Keys = new List<string>();
             this.Rkeys = new Dictionary<string, int>();
-            this.ExistHash = new Dictionary<int, int>();
+            this.HashTable = new HashTable<IExpr, int>();
         }
 
         public void Add(string key, IExpr expr)
@@ -301,7 +346,7 @@ namespace PEGenerator
         public List<string> Keys { get; }
         public Dictionary<string, int> Rkeys { get; }
         public List<IExpr> Exprs { get; }
-        public Dictionary<int, int> ExistHash { get; }
+        public HashTable<IExpr, int> HashTable { get; }
 
         public string PrintOut(string @namespace)
         {
